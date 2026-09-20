@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Sabbir</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    cursor:none;
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+#bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background:#030305;
+}
+
+#bg video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+    filter:
+        brightness(.72)
+        contrast(1.08)
+        saturate(1.05);
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 10%,
+            rgba(0,0,0,.38) 100%
+        );
+}
+
+
+/* =====================================================
+   SNOW
+===================================================== */
+
+#snow{
+    position:fixed;
+    inset:0;
+    z-index:4;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+.snow{
+    position:absolute;
+    top:-30px;
+
+    color:white;
+
+    opacity:.65;
+
+    text-shadow:
+        0 0 5px white,
+        0 0 12px rgba(170,110,255,.7);
+
+    animation:snowfall linear infinite;
+}
+
+@keyframes snowfall{
+
+    0%{
+        transform:
+            translate3d(0,-30px,0)
+            rotate(0deg);
+        opacity:0;
+    }
+
+    10%{
+        opacity:.7;
+    }
+
+    50%{
+        transform:
+            translate3d(30px,50vh,0)
+            rotate(180deg);
+    }
+
+    100%{
+        transform:
+            translate3d(-25px,110vh,0)
+            rotate(360deg);
+        opacity:0;
+    }
+}
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+#intro{
+    position:fixed;
+    inset:0;
+
+    z-index:50;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:none;
+
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
+}
+
+#intro.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+#introText{
+
+    font-size:
+        clamp(48px,8vw,85px);
+
+    font-weight:900;
+
+    letter-spacing:-4px;
+
+    opacity:0;
+
+    filter:blur(14px);
+
+    transform:
+        translateY(25px)
+        scale(.95);
+
+    text-shadow:
+        0 0 25px rgba(255,255,255,.5),
+        0 0 70px rgba(130,60,255,.35);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease,
+        filter .8s ease;
+}
+
+#introText.show{
+
+    opacity:1;
+
+    filter:blur(0);
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+#introText.fadeOut{
+
+    opacity:0;
+
+    filter:blur(12px);
+
+    transform:
+        translateY(-25px)
+        scale(1.05);
+}
+
+#clickHint{
+
+    position:absolute;
+
+    bottom:42px;
+
+    color:#aaa;
+
+    font-size:10px;
+
+    letter-spacing:4px;
+
+    animation:
+        hintPulse 1.7s infinite;
+}
+
+@keyframes hintPulse{
+
+    0%,100%{
+        opacity:.25;
+    }
+
+    50%{
+        opacity:1;
+    }
+}
+
+
+/* =====================================================
+   PAGES
+===================================================== */
+
+.page{
+
+    position:fixed;
+    inset:0;
+
+    z-index:10;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    opacity:0;
+    visibility:hidden;
+
+    transform:
+        scale(.97)
+        translateY(15px);
+
+    transition:
+        opacity .9s ease,
+        transform .9s ease,
+        visibility .9s ease;
+}
+
+.page.show{
+
+    opacity:1;
+    visibility:visible;
+
+    transform:
+        scale(1)
+        translateY(0);
+}
+
+
+/* =====================================================
+   GLASS CARD
+===================================================== */
+
+.card{
+
+    position:relative;
+
+    width:min(530px,94vw);
+
+    padding:38px 30px;
+
+    text-align:center;
+
+    border-radius:28px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.018)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    backdrop-filter:blur(9px);
+    -webkit-backdrop-filter:blur(9px);
+
+    box-shadow:
+
+        0 30px 100px
+        rgba(0,0,0,.5),
+
+        inset 0 1px
+        rgba(255,255,255,.1);
+
+    overflow:hidden;
+
+    transition:
+        transform .18s ease;
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    border-radius:28px;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent 20%,
+            rgba(255,255,255,.06) 45%,
+            transparent 70%
+        );
+
+    background-size:200% 100%;
+
+    animation:
+        cardShine 6s linear infinite;
+}
+
+@keyframes cardShine{
+
+    from{
+        background-position:-200% 0;
+    }
+
+    to{
+        background-position:200% 0;
+    }
+}
+
+
+/* =====================================================
+   ABOUT
+===================================================== */
+
+.aboutTitle{
+
+    position:relative;
+    z-index:2;
+
+    font-size:
+        clamp(34px,7vw,50px);
+
+    font-weight:900;
+
+    margin-bottom:22px;
+
+    text-shadow:
+        0 0 25px rgba(255,255,255,.35);
+}
+
+.aboutText{
+
+    position:relative;
+    z-index:2;
+
+    color:#eee;
+
+    font-size:15px;
+
+    line-height:1.8;
+
+    font-weight:bold;
+}
+
+.aboutText strong{
+    color:#fff;
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.continueBtn{
+
+    position:relative;
+    z-index:3;
+
+    margin-top:28px;
+
+    padding:11px 23px;
+
+    border-radius:13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.2);
+
+    background:
+        rgba(255,255,255,.06);
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    cursor:none;
+
+    transition:
+        .3s ease;
+}
+
+.continueBtn:hover{
+
+    transform:
+        translateY(-4px)
+        scale(1.04);
+
+    background:
+        rgba(145,80,255,.16);
+
+    border-color:
+        rgba(180,120,255,.55);
+
+    box-shadow:
+        0 10px 30px
+        rgba(100,40,255,.25);
+}
+
+
+/* =====================================================
+   AVATAR
+===================================================== */
+
+.avatarWrap{
+
+    position:relative;
+
+    width:165px;
+    height:165px;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+}
+
+.avatarAura{
+
+    position:absolute;
+
+    inset:-15px;
+
+    border-radius:50%;
+
+    background:
+        conic-gradient(
+            transparent,
+            rgba(255,255,255,.9),
+            rgba(135,65,255,.9),
+            transparent,
+            rgba(255,255,255,.8),
+            transparent
+        );
+
+    filter:blur(7px);
+
+    opacity:.7;
+
+    animation:
+        auraRotate 5s linear infinite;
+}
+
+@keyframes auraRotate{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.avatarRing{
+
+    position:absolute;
+
+    inset:-3px;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.7);
+
+    box-shadow:
+        0 0 20px rgba(145,70,255,.8),
+        0 0 50px rgba(100,40,255,.35);
+
+    animation:
+        ringPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes ringPulse{
+
+    0%,100%{
+        transform:scale(1);
+        opacity:.65;
+    }
+
+    50%{
+        transform:scale(1.06);
+        opacity:1;
+    }
+}
+
+.avatarBox{
+
+    position:relative;
+
+    z-index:5;
+
+    width:125px;
+    height:125px;
+
+    padding:3px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff,
+            #a45cff,
+            #35105f,
+            #fff
+        );
+
+    box-shadow:
+        0 0 25px rgba(140,70,255,.6);
+
+    animation:
+        avatarFloat 3s ease-in-out infinite;
+}
+
+.avatar{
+
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    background:#111;
+}
+
+@keyframes avatarFloat{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-5px);
+    }
+}
+
+
+/* =====================================================
+   AVATAR PARTICLES
+===================================================== */
+
+.avatarParticles{
+
+    position:absolute;
+
+    inset:-30px;
+
+    pointer-events:none;
+
+    z-index:7;
+}
+
+.avatarParticles span{
+
+    position:absolute;
+
+    width:4px;
+    height:4px;
+
+    border-radius:50%;
+
+    background:white;
+
+    box-shadow:
+        0 0 7px white,
+        0 0 15px #9c55ff;
+
+    animation:
+        particleFloat 3s ease-in-out infinite;
+}
+
+.avatarParticles span:nth-child(1){
+    left:5%;
+    top:28%;
+}
+
+.avatarParticles span:nth-child(2){
+    right:5%;
+    top:20%;
+    animation-delay:.5s;
+}
+
+.avatarParticles span:nth-child(3){
+    left:2%;
+    bottom:25%;
+    animation-delay:1s;
+}
+
+.avatarParticles span:nth-child(4){
+    right:2%;
+    bottom:30%;
+    animation-delay:1.5s;
+}
+
+.avatarParticles span:nth-child(5){
+    left:30%;
+    top:0;
+    animation-delay:2s;
+}
+
+.avatarParticles span:nth-child(6){
+    right:28%;
+    bottom:0;
+    animation-delay:2.5s;
+}
+
+@keyframes particleFloat{
+
+    0%,100%{
+        transform:
+            translateY(0)
+            scale(.4);
+        opacity:.2;
+    }
+
+    50%{
+        transform:
+            translateY(-15px)
+            scale(1.4);
+        opacity:1;
+    }
+}
+
+
+/* =====================================================
+   PROFILE TEXT
+===================================================== */
+
+.name{
+
+    position:relative;
+    z-index:3;
+
+    margin-top:18px;
+
+    font-size:
+        clamp(42px,8vw,60px);
+
+    font-weight:900;
+
+    letter-spacing:-2px;
+
+    text-shadow:
+        0 0 20px rgba(255,255,255,.35),
+        0 0 50px rgba(120,50,255,.2);
+}
+
+.bio{
+
+    position:relative;
+    z-index:3;
+
+    margin-top:7px;
+
+    color:#ccc;
+
+    font-size:14px;
+}
+
+
+/* =====================================================
+   LIVING
+===================================================== */
+
+.badges{
+
+    position:relative;
+
+    z-index:3;
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:16px;
+}
+
+.badge{
+
+    padding:7px 14px;
+
+    border-radius:20px;
+
+    color:#ddd;
+
+    font-size:11px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+}
+
+
+/* =====================================================
+   SOCIAL ICONS
+===================================================== */
+
+.links{
+
+    position:relative;
+
+    z-index:5;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:11px;
+
+    margin-top:22px;
+}
+
+.links a{
+
+    width:44px;
+    height:44px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    border-radius:13px;
+
+    background:
+        rgba(0,0,0,.18);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    cursor:none;
+
+    transition:
+        transform .3s ease,
+        background .3s ease,
+        box-shadow .3s ease;
+}
+
+.links a:hover{
+
+    transform:
+        translateY(-5px)
+        scale(1.08);
+
+    background:
+        rgba(145,75,255,.16);
+
+    box-shadow:
+        0 10px 30px
+        rgba(100,40,255,.25);
+}
+
+.links svg{
+
+    width:20px;
+    height:20px;
+
+    fill:currentColor;
+}
+
+
+/* =====================================================
+   MUSIC
+===================================================== */
+
+.music{
+
+    position:relative;
+
+    z-index:3;
+
+    width:min(320px,100%);
+
+    margin:20px auto 0;
+
+    padding:12px 15px;
+
+    border-radius:15px;
+
+    background:
+        rgba(0,0,0,.17);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+}
+
+.musicTop{
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:10px;
+}
+
+.musicIcon{
+
+    height:18px;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    gap:3px;
+}
+
+.musicIcon span{
+
+    width:3px;
+
+    border-radius:5px;
+
+    background:white;
+
+    box-shadow:
+        0 0 8px #9d55ff;
+
+    animation:
+        bars .7s infinite alternate;
+}
+
+.musicIcon span:nth-child(1){
+    height:7px;
+}
+
+.musicIcon span:nth-child(2){
+    height:14px;
+    animation-delay:.15s;
+}
+
+.musicIcon span:nth-child(3){
+    height:9px;
+    animation-delay:.3s;
+}
+
+.musicIcon span:nth-child(4){
+    height:15px;
+    animation-delay:.45s;
+}
+
+@keyframes bars{
+
+    from{
+        transform:scaleY(.4);
+    }
+
+    to{
+        transform:scaleY(1);
+    }
+}
+
+.progress{
+
+    height:3px;
+
+    margin-top:10px;
+
+    overflow:hidden;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.08);
+}
+
+.progressBar{
+
+    width:35%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7135ff,
+            #d5baff,
+            white
+        );
+
+    animation:
+        progressMove 5s linear infinite;
+}
+
+@keyframes progressMove{
+
+    from{
+        transform:translateX(-110%);
+    }
+
+    to{
+        transform:translateX(320%);
+    }
+}
+
+
+/* =====================================================
+   PREMIUM CURSOR
+===================================================== */
+
+#cursor{
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    width:12px;
+    height:12px;
+
+    z-index:99999;
+
+    pointer-events:none;
+
+    transform:
+        translate(-50%,-50%)
+        rotate(45deg);
+
+    border-radius:3px 7px 3px 7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            white,
+            #cdb4ff
+        );
+
+    box-shadow:
+        0 0 7px white,
+        0 0 16px rgba(165,100,255,.9),
+        0 0 32px rgba(110,40,255,.55);
+
+    transition:
+        width .2s ease,
+        height .2s ease,
+        opacity .2s ease;
+}
+
+#cursor::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:3px;
+
+    border-radius:2px;
+
+    background:
+        rgba(255,255,255,.7);
+}
+
+
+/* =====================================================
+   CURSOR OUTER
+===================================================== */
+
+#cursorOuter{
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    width:34px;
+    height:34px;
+
+    z-index:99998;
+
+    pointer-events:none;
+
+    transform:
+        translate(-50%,-50%);
+
+    border:
+        1px solid
+        rgba(255,255,255,.35);
+
+    border-radius:50%;
+
+    box-shadow:
+        0 0 12px rgba(155,90,255,.25);
+
+    transition:
+        width .25s cubic-bezier(.2,.8,.2,1),
+        height .25s cubic-bezier(.2,.8,.2,1),
+        border-color .25s ease,
+        background .25s ease;
+}
+
+#cursorOuter::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:7px;
+
+    border:
+        1px solid
+        rgba(160,90,255,.25);
+
+    border-radius:50%;
+}
+
+
+/* =====================================================
+   CURSOR TRAIL
+===================================================== */
+
+.cursorTrail{
+
+    position:fixed;
+
+    width:5px;
+    height:5px;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    z-index:99990;
+
+    background:white;
+
+    box-shadow:
+        0 0 7px white,
+        0 0 16px #9d55ff;
+
+    transform:
+        translate(-50%,-50%);
+
+    animation:
+        trailDisappear .6s ease-out forwards;
+}
+
+@keyframes trailDisappear{
+
+    0%{
+        opacity:.75;
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            scale(.05);
+    }
+}
+
+
+/* =====================================================
+   CLICK RIPPLE
+===================================================== */
+
+.clickRipple{
+
+    position:fixed;
+
+    width:12px;
+    height:12px;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    z-index:99995;
+
+    border:
+        1px solid
+        rgba(255,255,255,.9);
+
+    box-shadow:
+        0 0 8px white,
+        0 0 20px #9c55ff,
+        0 0 40px rgba(110,40,255,.7);
+
+    transform:
+        translate(-50%,-50%)
+        scale(.3);
+
+    animation:
+        ripple .65s cubic-bezier(.1,.7,.2,1) forwards;
+}
+
+@keyframes ripple{
+
+    0%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(.3);
+    }
+
+    100%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(5);
+    }
+}
+
+
+/* =====================================================
+   CLICK PARTICLES
+===================================================== */
+
+.clickParticle{
+
+    position:fixed;
+
+    width:4px;
+    height:4px;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    z-index:99996;
+
+    background:white;
+
+    box-shadow:
+        0 0 6px white,
+        0 0 15px #9d55ff;
+
+    transform:
+        translate(-50%,-50%);
+
+    animation:
+        particleBurst .65s ease-out forwards;
+}
+
+@keyframes particleBurst{
+
+    0%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+    100%{
+        opacity:0;
+
+        transform:
+            translate(
+                calc(-50% + var(--x)),
+                calc(-50% + var(--y))
+            )
+            scale(.1);
+    }
+}
+
+
+/* =====================================================
+   CURSOR HOVER
+===================================================== */
+
+body.cursorHover #cursor{
+
+    width:17px;
+    height:17px;
+
+    box-shadow:
+        0 0 8px white,
+        0 0 20px #a55cff,
+        0 0 40px #7135ff;
+}
+
+body.cursorHover #cursorOuter{
+
+    width:48px;
+    height:48px;
+
+    border-color:
+        rgba(190,150,255,.65);
+
+    background:
+        rgba(140,70,255,.04);
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+    body{
+        cursor:auto;
+    }
+
+    #cursor,
+    #cursorOuter,
+    .cursorTrail,
+    .clickRipple,
+    .clickParticle{
+        display:none;
+    }
+
+    .card{
+        padding:30px 18px;
+        border-radius:23px;
+    }
+
+    .aboutText{
+        font-size:13px;
+        line-height:1.7;
+    }
+
+    .avatarWrap{
+        width:145px;
+        height:145px;
+    }
+
+    .avatarBox{
+        width:105px;
+        height:105px;
+    }
+
+    .name{
+        font-size:43px;
+    }
+
+    .bio{
+        font-size:13px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
+<div id="bg">
+
+    <video
+        id="backgroundVideo"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto">
+
+        <source
+            src="background.mp4"
+            type="video/mp4">
+
+    </video>
+
+</div>
+
+<div class="overlay"></div>
+
+
+<!-- SNOW -->
+
+<div id="snow"></div>
+
+
+<!-- =====================================================
+     INTRO
+===================================================== -->
+
+<div id="intro">
+
+    <div id="introText">
+        HI.
+    </div>
+
+    <div id="clickHint">
+        CLICK TO CONTINUE
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<div
+    id="aboutPage"
+    class="page">
+
+    <div
+        class="card"
+        id="aboutCard">
+
+        <h1 class="aboutTitle">
+            About Me
+        </h1>
+
+        <p class="aboutText">
+
+            <strong>Assalamu Alaikum!</strong>
+
+            <br><br>
+
+            My name is
+            <strong>Sabbir Ahmed</strong>.
+
+            I'm an
+            <strong>SSC candidate</strong>
+            from Bangladesh.
+
+            I'm a gamer and I'm interested in
+            technology, gaming, and digital content.
+
+            I enjoy learning new things and
+            experimenting with different ideas.
+
+        </p>
+
+        <button
+            class="continueBtn"
+            id="continueBtn">
+
+            Continue →
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROFILE
+===================================================== -->
+
+<div
+    id="profilePage"
+    class="page">
+
+    <div
+        class="card"
+        id="profileCard">
+
+
+        <!-- AVATAR -->
+
+        <div class="avatarWrap">
+
+            <div class="avatarAura"></div>
+
+            <div class="avatarRing"></div>
+
+            <div class="avatarParticles">
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+            <div class="avatarBox">
+
+                <img
+                    class="avatar"
+                    src="avatar.png"
+                    alt="Sabbir">
+
+            </div>
+
+        </div>
+
+
+        <!-- NAME -->
+
+        <h1 class="name">
+            Sabbir
+        </h1>
+
+
+        <p class="bio">
+            just another guy on the internet :)
+        </p>
+
+
+        <!-- LIVING -->
+
+        <div class="badges">
+
+            <div class="badge">
+                Living: BD
+            </div>
+
+        </div>
+
+
+        <!-- SOCIAL ICONS -->
+
+        <div class="links">
+
+
+            <!-- DISCORD -->
+
+            <a
+                href="https://discord.com/users/1492094894385139825"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Discord">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M19.54 5.34A16.9 16.9 0 0 0 15.36 4l-.51 1.05a15.2 15.2 0 0 0-5.7 0L8.64 4a16.9 16.9 0 0 0-4.18 1.34C1.82 9.2 1.1 13 1.45 16.75a16.9 16.9 0 0 0 5.14 2.6l1.25-1.72c-.69-.25-1.35-.56-1.98-.93l.48-.36c3.83 1.8 7.98 1.8 11.77 0l.48.36c-.63.37-1.29.68-1.98.93l1.25 1.72a16.9 16.9 0 0 0 5.14-2.6c.41-4.35-.7-8.1-3.46-11.41ZM8.72 14.9c-1.15 0-2.1-1.06-2.1-2.36s.92-2.37 2.1-2.37c1.18 0 2.12 1.07 2.1 2.37 0 1.3-.93 2.36-2.1 2.36Zm6.56 0c-1.15 0-2.1-1.06-2.1-2.36s.92-2.37 2.1-2.37c1.18 0 2.1 1.07 2.1 2.37 0 1.3-.92 2.36-2.1 2.36Z"/>
+
+                </svg>
+
+            </a>
+
+
+            <!-- INSTAGRAM -->
+
+            <a
+                href="https://www.instagram.com/__._.miyuuki._._/"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Instagram">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/>
+
+                </svg>
+
+            </a>
+
+
+            <!-- GITHUB -->
+
+            <a
+                href="#"
+                title="GitHub">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.34-1.77-1.34-1.77-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.23 1.84 1.23 1.07 1.84 2.8 1.31 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.94 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.17.76.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z"/>
+
+                </svg>
+
+            </a>
+
+
+            <!-- YOUTUBE -->
+
+            <a
+                href="#"
+                title="YouTube">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M23.5 6.19a3 3 0 0 0-2.11-2.12C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.39.57A3 3 0 0 0 .5 6.19 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.81 3 3 0 0 0 2.11 2.12c1.87.57 9.39.57 9.39.57s7.52 0 9.39-.57a3 3 0 0 0 2.11-2.12A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.81ZM9.6 15.5v-7l6 3.5-6 3.5Z"/>
+
+                </svg>
+
+            </a>
+
+        </div>
+
+
+        <!-- MUSIC -->
+
+        <div class="music">
+
+            <div class="musicTop">
+
+                <div class="musicIcon">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+                <span style="font-size:11px;color:#ddd;">
+                    Music playing
+                </span>
+
+            </div>
+
+            <div class="progress">
+
+                <div class="progressBar"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- MUSIC -->
+
+<audio
+    id="music"
+    src="music.mp3"
+    autoplay
+    loop
+    preload="auto">
+</audio>
+
+
+<!-- =====================================================
+     PREMIUM CURSOR
+===================================================== -->
+
+<div id="cursor"></div>
+
+<div id="cursorOuter"></div>
+
+
+<script>
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const intro =
+    document.getElementById("intro");
+
+const introText =
+    document.getElementById("introText");
+
+const aboutPage =
+    document.getElementById("aboutPage");
+
+const profilePage =
+    document.getElementById("profilePage");
+
+const continueBtn =
+    document.getElementById("continueBtn");
+
+const music =
+    document.getElementById("music");
+
+const video =
+    document.getElementById("backgroundVideo");
+
+const profileCard =
+    document.getElementById("profileCard");
+
+const cursor =
+    document.getElementById("cursor");
+
+const cursorOuter =
+    document.getElementById("cursorOuter");
+
+
+/* =====================================================
+   VIDEO
+===================================================== */
+
+video.muted=true;
+
+video.play().catch(()=>{
+    console.log("Video autoplay blocked.");
+});
+
+
+/* =====================================================
+   MUSIC
+===================================================== */
+
+music.volume=.7;
+
+function startMusic(){
+
+    if(music.paused){
+
+        music.play().catch(()=>{
+            console.log(
+                "Music requires interaction."
+            );
+        });
+
+    }
+
+}
+
+
+/* =====================================================
+   SNOW
+===================================================== */
+
+const snow=
+    document.getElementById("snow");
+
+for(let i=0;i<80;i++){
+
+    const flake=
+        document.createElement("div");
+
+    flake.className="snow";
+
+    flake.textContent=
+        Math.random()>.5
+        ? "❄"
+        : "•";
+
+    flake.style.left=
+        Math.random()*100+"vw";
+
+    flake.style.fontSize=
+        (5+Math.random()*12)+"px";
+
+    flake.style.animationDuration=
+        (6+Math.random()*10)+"s";
+
+    flake.style.animationDelay=
+        -(Math.random()*12)+"s";
+
+    snow.appendChild(flake);
+}
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+const messages=[
+    "HI.",
+    "I'M SABBIR.",
+    "WELCOME."
+];
+
+let current=0;
+let busy=false;
+
+window.addEventListener(
+    "load",
+    ()=>{
+
+        setTimeout(()=>{
+            introText.classList.add("show");
+        },400);
+
+    }
+);
+
+
+intro.addEventListener(
+    "click",
+    ()=>{
+
+        if(busy)
+            return;
+
+        busy=true;
+
+        startMusic();
+
+        introText.classList.remove("show");
+
+        introText.classList.add("fadeOut");
+
+
+        setTimeout(()=>{
+
+            current++;
+
+
+            if(current<messages.length){
+
+                introText.textContent=
+                    messages[current];
+
+                introText.classList.remove(
+                    "fadeOut"
+                );
+
+                void introText.offsetWidth;
+
+                introText.classList.add(
+                    "show"
+                );
+
+                busy=false;
+
+            }
+
+            else{
+
+                intro.classList.add("hide");
+
+                setTimeout(()=>{
+
+                    aboutPage.classList.add(
+                        "show"
+                    );
+
+                },350);
+
+            }
+
+        },800);
+
+    }
+);
+
+
+/* =====================================================
+   ABOUT → PROFILE
+===================================================== */
+
+continueBtn.addEventListener(
+    "click",
+    ()=>{
+
+        aboutPage.classList.remove(
+            "show"
+        );
+
+        setTimeout(()=>{
+
+            profilePage.classList.add(
+                "show"
+            );
+
+        },500);
+
+    }
+);
+
+
+/* =====================================================
+   CARD TILT
+===================================================== */
+
+document.addEventListener(
+    "mousemove",
+    e=>{
+
+        if(
+            !profilePage.classList.contains(
+                "show"
+            )
+        )
+            return;
+
+        const rect=
+            profileCard.getBoundingClientRect();
+
+        const x=
+            e.clientX-rect.left;
+
+        const y=
+            e.clientY-rect.top;
+
+        const centerX=
+            rect.width/2;
+
+        const centerY=
+            rect.height/2;
+
+        const rotateX=
+            ((y-centerY)/centerY)*-3;
+
+        const rotateY=
+            ((x-centerX)/centerX)*3;
+
+        profileCard.style.transform=
+            `perspective(900px)
+             rotateX(${rotateX}deg)
+             rotateY(${rotateY}deg)`;
+
+    }
+);
+
+profileCard.addEventListener(
+    "mouseleave",
+    ()=>{
+
+        profileCard.style.transform=
+            "perspective(900px) rotateX(0deg) rotateY(0deg)";
+
+    }
+);
+
+
+/* =====================================================
+   PREMIUM CURSOR
+===================================================== */
+
+let mouseX=0;
+let mouseY=0;
+
+let outerX=0;
+let outerY=0;
+
+let lastTrail=0;
+
+
+/* MAIN CURSOR */
+
+document.addEventListener(
+    "mousemove",
+    e=>{
+
+        mouseX=e.clientX;
+        mouseY=e.clientY;
+
+        cursor.style.left=
+            mouseX+"px";
+
+        cursor.style.top=
+            mouseY+"px";
+
+
+        const now=
+            performance.now();
+
+        if(now-lastTrail>40){
+
+            createTrail(
+                mouseX,
+                mouseY
+            );
+
+            lastTrail=now;
+
+        }
+
+    }
+);
+
+
+/* SMOOTH OUTER RING */
+
+function animateCursor(){
+
+    outerX +=
+        (mouseX-outerX)*.16;
+
+    outerY +=
+        (mouseY-outerY)*.16;
+
+    cursorOuter.style.left=
+        outerX+"px";
+
+    cursorOuter.style.top=
+        outerY+"px";
+
+    requestAnimationFrame(
+        animateCursor
+    );
+}
+
+animateCursor();
+
+
+/* =====================================================
+   TRAIL
+===================================================== */
+
+function createTrail(x,y){
+
+    const trail=
+        document.createElement("div");
+
+    trail.className=
+        "cursorTrail";
+
+    trail.style.left=
+        x+"px";
+
+    trail.style.top=
+        y+"px";
+
+    document.body.appendChild(
+        trail
+    );
+
+    setTimeout(()=>{
+        trail.remove();
+    },650);
+
+}
+
+
+/* =====================================================
+   CLICK
+===================================================== */
+
+document.addEventListener(
+    "click",
+    e=>{
+
+        createRipple(
+            e.clientX,
+            e.clientY
+        );
+
+        createParticles(
+            e.clientX,
+            e.clientY
+        );
+
+    }
+);
+
+
+/* =====================================================
+   RIPPLE
+===================================================== */
+
+function createRipple(x,y){
+
+    const ripple=
+        document.createElement("div");
+
+    ripple.className=
+        "clickRipple";
+
+    ripple.style.left=
+        x+"px";
+
+    ripple.style.top=
+        y+"px";
+
+    document.body.appendChild(
+        ripple
+    );
+
+    setTimeout(()=>{
+        ripple.remove();
+    },700);
+
+}
+
+
+/* =====================================================
+   CLICK PARTICLES
+===================================================== */
+
+function createParticles(x,y){
+
+    for(let i=0;i<9;i++){
+
+        const particle=
+            document.createElement("div");
+
+        particle.className=
+            "clickParticle";
+
+        particle.style.left=
+            x+"px";
+
+        particle.style.top=
+            y+"px";
+
+
+        const angle=
+            Math.random()*Math.PI*2;
+
+        const distance=
+            25+Math.random()*60;
+
+        particle.style.setProperty(
+            "--x",
+            Math.cos(angle)*distance+"px"
+        );
+
+        particle.style.setProperty(
+            "--y",
+            Math.sin(angle)*distance+"px"
+        );
+
+        const size=
+            2+Math.random()*4;
+
+        particle.style.width=
+            size+"px";
+
+        particle.style.height=
+            size+"px";
+
+        document.body.appendChild(
+            particle
+        );
+
+        setTimeout(()=>{
+            particle.remove();
+        },700);
+
+    }
+
+}
+
+
+/* =====================================================
+   HOVER EFFECT
+===================================================== */
+
+document
+.querySelectorAll(
+    "a,button"
+)
+.forEach(
+    element=>{
+
+        element.addEventListener(
+            "mouseenter",
+            ()=>{
+
+                document.body.classList.add(
+                    "cursorHover"
+                );
+
+            }
+        );
+
+        element.addEventListener(
+            "mouseleave",
+            ()=>{
+
+                document.body.classList.remove(
+                    "cursorHover"
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
